@@ -86,6 +86,86 @@ export default function AvaliarAtividadeSelecionada() {
 
 
     const finalizarSubmissao = async (id_avaliacao) => {
+
+        //calcular se aluno entregou as atividades
+        var i_ = 0;
+        var ii_ = 0;
+        var iii_ = 0;
+        var iv_ = 0;
+        var v_ = 0;
+        var vi_ = 0;
+        var vii_ = 0;
+        for (var j = 0; j < atividades.length; j++) {
+            switch (atividades[j].categoria) {
+                case 'I':
+                    i_ = i_ + parseFloat(atividades[j].quantidade_horas);
+                    break;
+                case 'II':
+                    ii_ = ii_ + parseFloat(atividades[j].quantidade_horas);
+                    break;
+                case 'III':
+                    iii_ = iii_ + parseFloat(atividades[j].quantidade_horas);
+                    break;
+                case 'IV':
+                    iv_ = iv_ + parseFloat(atividades[j].quantidade_horas);
+                    break;
+                case 'V':
+                    v_ = v_ + parseFloat(atividades[j].quantidade_horas);
+                    break;
+                case 'VI':
+                    vi_ = vi_ + parseFloat(atividades[j].quantidade_horas);
+                    break;
+                case 'VII':
+                    vii_ = vii_ + parseFloat(atividades[j].quantidade_horas);
+                    break;
+                default:
+                    console.log("Algo inesperado ocorreu");
+            }
+        }
+
+        console.log(i_ + " " + ii_ + " " + iii_ + " " + iv_ + " " + v_ + " " + vi_ + " " + vii_);
+
+        if (i_ > 96) {
+            i_ = 96;
+        }
+        if (ii_ > 64) {
+            ii_ = 64;
+        }
+        if (iii_ > 32) {
+            iii_ = 32;
+        }
+        if (iv_ > 64) {
+            iv_ = 64;
+        }
+        if (v_ > 96) {
+            v_ = 96;
+        }
+        if (vi_ > 48) {
+            vi_ = 48;
+        }
+        if (vii_ > 48) {
+            vii_ = 48;
+        }
+
+        var soma = i_ + ii_ + iii_ + iv_ + v_ + vi_ + vii_;
+        if(soma >= 288){
+            try {
+                const body = { id_avaliacao,token }
+                const response = await fetch(Portas().serverHost + "/aprovarAtividades", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(body)
+                });
+    
+                var resJSON1 = await response.json();
+                console.log(resJSON1);
+    
+            }
+            catch (err) {
+            }
+        }
+
+
         try {
             const body = { id_avaliacao, token }
             const response = await fetch(Portas().serverHost + "/finalizarAvaliacao", {
@@ -215,6 +295,7 @@ export default function AvaliarAtividadeSelecionada() {
                                         onInput={(e) => {
                                             e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 4)
                                         }}
+                                        style={{ width: 100 }}
                                     />
                                 </td>
                                 <td>
