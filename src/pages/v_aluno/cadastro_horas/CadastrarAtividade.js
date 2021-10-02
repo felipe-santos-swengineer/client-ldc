@@ -175,7 +175,8 @@ export default function FormPropsTextFields() {
             return;
         }
 
-        if (quantHoras < 1) {
+        if (quantHoras > 0) {}
+        else{
             alert("Quantidade de horas inválida");
             return;
         }

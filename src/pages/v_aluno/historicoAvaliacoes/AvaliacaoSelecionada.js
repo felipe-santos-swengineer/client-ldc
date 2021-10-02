@@ -99,6 +99,7 @@ export default function AvaliacaoSelecionada(){
                             <th>Descrição</th>
                             <th>Link</th>
                             <th>Pdf</th>
+                            <th>Horas Validas</th>
                             <th>FeedBack</th>
                         </tr>
                     </thead>
@@ -130,6 +131,7 @@ export default function AvaliacaoSelecionada(){
                                         "Sem Anexo"
                                     }
                                 </td>
+                                <td>{atividade.horas_validas}</td>
                                 <td>{atividade.feedback}</td>
                             </tr>
                         ))}

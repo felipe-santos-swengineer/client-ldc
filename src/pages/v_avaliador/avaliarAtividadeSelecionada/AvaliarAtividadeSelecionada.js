@@ -22,7 +22,7 @@ export default function AvaliarAtividadeSelecionada() {
         if (id === "" || id === null || id === undefined) {
             return false;
         }
-        else{
+        else {
             return true;
         }
     }
@@ -85,9 +85,9 @@ export default function AvaliarAtividadeSelecionada() {
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 
-    const finalizarSubmissao = async(id_avaliacao) => {
-        try{
-            const body = {id_avaliacao, token}
+    const finalizarSubmissao = async (id_avaliacao) => {
+        try {
+            const body = { id_avaliacao, token }
             const response = await fetch(Portas().serverHost + "/finalizarAvaliacao", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -97,9 +97,9 @@ export default function AvaliarAtividadeSelecionada() {
             var resJSON = await response.json();
             alert(resJSON);
             window.location = "/historicoAvaliacoes";
-        
+
         }
-        catch(err){
+        catch (err) {
             alert("um erro ocorreu");
             return;
         }
@@ -109,10 +109,9 @@ export default function AvaliarAtividadeSelecionada() {
 
         var successCount = 0;
 
-        const update = async(id, newValue) => {
-            try{
-
-                const body = {id, token, newValue}
+        const update = async (id, feedback, quantHoras) => {
+            try {
+                const body = { id, token, quantHoras, feedback}
                 const response = await fetch(Portas().serverHost + "/enviarAvaliacao", {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
@@ -123,28 +122,34 @@ export default function AvaliarAtividadeSelecionada() {
                 console.log(resJSON);
                 successCount += 1;
 
-                if(successCount === atividades.length){
+                if (successCount === atividades.length) {
                     finalizarSubmissao(atividades[0].id_avaliacao);
                 }
-          
+
             }
-            catch(err){
+            catch (err) {
                 alert("um erro ocorreu");
                 return;
             }
         }
 
+        var itemFeedback;
+        var itemHoras;
 
-        
-        for(var i = 0; i < atividades.length; i++){
-            if(document.getElementById("feedback-" + atividades[i].id).value === ""){
-                document.getElementById("feedback-" + atividades[i].id).value = "Atividade sem irregularidades"; 
+        for (var i = 0; i < atividades.length; i++) {
+            itemFeedback = document.getElementById("feedback-" + atividades[i].id).value;
+            if (itemFeedback === "") {
+                itemFeedback = "Atividade sem irregularidades";
             }
-            update(atividades[i].id, document.getElementById("feedback-" + atividades[i].id).value);
             
-        }
+            itemHoras = parseInt(document.getElementById("quantHoras-" + atividades[i].id).value, 10);
+            if (itemHoras >= 0) {}
+            else{
+                itemHoras = 0;
+            }
 
-        
+            update(atividades[i].id, itemFeedback, itemHoras);
+        }
     }
 
 
@@ -152,7 +157,7 @@ export default function AvaliarAtividadeSelecionada() {
         <div>
             <NavBar></NavBar>
             <Paper elevation={12} style={{ marginLeft: "10px", marginRight: "10px", marginBottom: "10px" }}>
-                <h4 style={{marginTop: "15px", textAlign: "center", fontSize: "10px", color: "orange"}}>Se o campo de feedback ficar vazio, o sistema automaticamente sustituirá por "Atividade sem irregularidades"</h4>
+                <h4 style={{ marginTop: "15px", textAlign: "center", fontSize: "10px", color: "orange" }}>Se o campo de feedback ficar vazio, o sistema automaticamente sustituirá por "Atividade sem irregularidades"</h4>
                 <Table responsive>
                     <thead>
                         <tr>
@@ -165,6 +170,7 @@ export default function AvaliarAtividadeSelecionada() {
                             <th>Descrição</th>
                             <th>Link</th>
                             <th>Pdf</th>
+                            <th>Horas Validas</th>
                             <th>FeedBack</th>
                         </tr>
                     </thead>
@@ -172,15 +178,15 @@ export default function AvaliarAtividadeSelecionada() {
                         {atividades.map(atividade => (
                             <tr key={atividade.id}>
                                 <td>{atividade.titulo}</td>
-                                <td>{atividade.data_inicio.replace(/-/gi,"/")}</td>
-                                <td>{atividade.data_fim.replace(/-/gi,"/")}</td>
+                                <td>{atividade.data_inicio.replace(/-/gi, "/")}</td>
+                                <td>{atividade.data_fim.replace(/-/gi, "/")}</td>
                                 <td>{atividade.categoria}</td>
                                 <td>{atividade.sub_categoria}</td>
                                 <td>{atividade.quantidade_horas}</td>
                                 <td>{atividade.descricao}</td>
                                 <td>
-                                    {isValid(atividade.doc_link)?
-                                        <Button variant="contained" color="primary" style={{width: "110px"}} onClick={() => openLink(atividade.doc_link)} >
+                                    {isValid(atividade.doc_link) ?
+                                        <Button variant="contained" color="primary" style={{ width: "110px" }} onClick={() => openLink(atividade.doc_link)} >
                                             Abrir link
                                         </Button>
                                         :
@@ -188,13 +194,28 @@ export default function AvaliarAtividadeSelecionada() {
                                     }
                                 </td>
                                 <td>
-                                    {isValid(atividade.nome_pdf)?
-                                        <Button variant="contained" color="primary" style={{width: "110px"}} onClick={() => openPdf(atividade.nome_pdf)} >
+                                    {isValid(atividade.nome_pdf) ?
+                                        <Button variant="contained" color="primary" style={{ width: "110px" }} onClick={() => openPdf(atividade.nome_pdf)} >
                                             Abrir pdf
                                         </Button>
                                         :
                                         "Sem Anexo"
                                     }
+                                </td>
+                                <td>
+                                    <TextField
+                                        id={"quantHoras-" + atividade.id}
+                                        label=""
+                                        type="number"
+                                        defaultValue={0}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        variant="outlined"
+                                        onInput={(e) => {
+                                            e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 4)
+                                        }}
+                                    />
                                 </td>
                                 <td>
                                     <TextField
