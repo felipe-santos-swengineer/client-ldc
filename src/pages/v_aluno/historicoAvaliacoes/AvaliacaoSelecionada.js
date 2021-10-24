@@ -97,7 +97,6 @@ export default function AvaliacaoSelecionada(){
                             <th>SubCategoria</th>
                             <th>QuantHoras</th>
                             <th>Descrição</th>
-                            <th>Link</th>
                             <th>Pdf</th>
                             <th>Horas Validas</th>
                             <th>FeedBack</th>
@@ -113,15 +112,6 @@ export default function AvaliacaoSelecionada(){
                                 <td>{atividade.sub_categoria}</td>
                                 <td>{atividade.quantidade_horas}</td>
                                 <td>{atividade.descricao}</td>
-                                <td>
-                                    {isValid(atividade.doc_link)?
-                                        <Button variant="contained" color="primary" style={{width: "110px"}} onClick={() => openLink(atividade.doc_link)} >
-                                            Abrir link
-                                        </Button>
-                                        :
-                                        "Sem Anexo"
-                                    }
-                                </td>
                                 <td>
                                     {isValid(atividade.nome_pdf)?
                                         <Button variant="contained" color="primary" style={{width: "110px"}} onClick={() => openPdf(atividade.nome_pdf)} >

@@ -49,7 +49,7 @@ export default function NavBar() {
     }
     redirect();
   }
-  else{
+  else {
     window.location = "/";
   }
 
@@ -59,10 +59,14 @@ export default function NavBar() {
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" style={{ marginBottom: "20px" }}>
         <Container>
           <Avatar alt="Icone do sistema" src="plc_logo.ico" style={{ marginRight: "10px" }}></Avatar>
-          <Navbar.Brand href="/adminHome">Banco de Horas</Navbar.Brand>
+          <Navbar.Brand href="/adminHome">CHRONOS-UFC</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav>
+              <NavDropdown title="Controle de Categorias" id="basic-nav-dropdown">
+                <NavDropdown.Item href="/cadastrarVersao">Cadastrar nova Versão</NavDropdown.Item>
+                <NavDropdown.Item href="/manterVersoes">Manter versões</NavDropdown.Item>
+              </NavDropdown>
               <NavDropdown title="Controle de Alunos" id="basic-nav-dropdown">
                 <NavDropdown.Item href="/aprovarAlunos">Aprovar Alunos</NavDropdown.Item>
                 <NavDropdown.Item href="/manterAlunos">Manter Alunos</NavDropdown.Item>

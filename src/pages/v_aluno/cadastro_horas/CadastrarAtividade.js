@@ -33,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
         marginRight: "10px",
         paddingRight: "10px",
         paddingLeft: "10px",
-        overflowX: "auto",
     },
     root1: {
         '& .MuiTextField-root': {
@@ -148,13 +147,17 @@ export default function FormPropsTextFields() {
 
         var titulo = document.getElementById("titulo").value;
         var descricao = document.getElementById("descricao").value;
-        var link = document.getElementById("link").value;
+        var link = "";
         var quantHoras = parseInt(document.getElementById("quantHoras").value, 10);
         var selectedCategoria = document.getElementById("categoria").value;
         var selectedSubCategoria = document.getElementById("subcategoria").value;
         var dataInicio = "";
         var dataFim = "";
 
+        if (isFilePicked === false) {
+            alert("Insira o documento PDF comprobatório");
+            return;
+        }
 
         if (selectedDateInicio.toString() === "Invalid Date") {
             alert("Erro na data de Inicio");
@@ -175,8 +178,8 @@ export default function FormPropsTextFields() {
             return;
         }
 
-        if (quantHoras > 0) {}
-        else{
+        if (quantHoras > 0) { }
+        else {
             alert("Quantidade de horas inválida");
             return;
         }
@@ -380,127 +383,117 @@ export default function FormPropsTextFields() {
     return (
         <div>
             <NavBar></NavBar>
-            <h1 style={{ textAlign: "center" }}>Formulário de Cadastro</h1>
-            <div className={classes.root}>
-                <Paper className={classes.paper} elevation={12}>
-                    <form className={classes.root1} noValidate autoComplete="off">
-                        <h2 style={{ textAlign: "center", marginTop: '10px' }}>Informações básicas</h2>
-                        <div style={{ alignItems: "center", justifyContent: "center ", display: "grid" }}>
-                            <TextField
-                                id="titulo"
-                                label="Titulo*"
-                                type="search"
-                                variant="outlined"
-                                inputProps={{ maxLength: 199 }}
-                            />
+            <Paper elevation={12} style={{ textAlign: "center", marginTop: "10px", marginLeft: "20px", marginRight: "20px", marginBottom: "10px" }} elevation={12}>
+                <form noValidate autoComplete="off">
+                    <h2 style={{ textAlign: "center", marginTop: '10px' }}>Formulário de Cadastro</h2>
+                    <div style={{ alignItems: "center", justifyContent: "center ", display: "grid", }}>
+                        <TextField
+                            style={{ marginTop: "5px" }}
+                            id="titulo"
+                            label="Titulo*"
+                            type="search"
+                            variant="outlined"
+                            inputProps={{ maxLength: 199 }}
+                        />
 
-                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                <KeyboardDatePicker
-                                    margin="normal"
-                                    id="DataInicio"
-                                    label="Data de Inicio*"
-                                    format="dd/MM/yyyy"
-                                    value={selectedDateInicio}
-                                    onChange={handleDateChangeInicio}
-                                    KeyboardButtonProps={{
-                                        'aria-label': 'change date',
-                                    }}
-                                />
-                                <KeyboardDatePicker
-                                    margin="normal"
-                                    id="dataFim"
-                                    label="Data de Fim*"
-                                    format="dd/MM/yyyy"
-                                    value={selectedDateFim}
-                                    onChange={handleDateChangeFim}
-                                    KeyboardButtonProps={{
-                                        'aria-label': 'change date',
-                                    }}
-                                />
-                            </MuiPickersUtilsProvider>
-
-                            <TextField
-                                style={{ marginBottom: "10px", marginTop: "10px" }}
-                                id="categoria"
-                                select
-                                label="Categoria*"
-                                value={categoria}
-                                onChange={handleChangeCategoria}
-                                SelectProps={{
-                                    native: true,
-                                }}
-                                variant="outlined"
-                            >
-                                {categorias.map((option) => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </TextField>
-
-                            <TextField
-                                style={{ marginBottom: "10px", marginTop: "10px" }}
-                                id="subcategoria"
-                                select
-                                label="Sub-Categoria*"
-                                value={subCategoria}
-                                onChange={handleChangeSubCategoria}
-                                SelectProps={{
-                                    native: true,
-                                }}
-                                variant="outlined"
-                            >
-                                {subCategorias.map((option) => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </TextField>
-
-                            <TextField
-                                id="quantHoras"
-                                label="Quantidade de Horas*"
-                                type="number"
-                                defaultValue={0}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                                variant="outlined"
-                                onInput={(e) => {
-                                    e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 4)
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <KeyboardDatePicker
+                                margin="normal"
+                                id="DataInicio"
+                                label="Data de Inicio*"
+                                format="dd/MM/yyyy"
+                                value={selectedDateInicio}
+                                onChange={handleDateChangeInicio}
+                                KeyboardButtonProps={{
+                                    'aria-label': 'change date',
                                 }}
                             />
+                            <KeyboardDatePicker
+                                margin="normal"
+                                id="dataFim"
+                                label="Data de Fim*"
+                                format="dd/MM/yyyy"
+                                value={selectedDateFim}
+                                onChange={handleDateChangeFim}
+                                KeyboardButtonProps={{
+                                    'aria-label': 'change date',
+                                }}
+                            />
+                        </MuiPickersUtilsProvider>
 
-                            <TextField
-                                id="descricao"
-                                label="Descrição*"
-                                multiline
-                                rows={4}
-                                type="search"
-                                variant="outlined"
-                                inputProps={{ maxLength: 4999 }} />
+                        <TextField
+                            style={{ marginBottom: "5px", marginTop: "5px" }}
+                            id="categoria"
+                            select
+                            label="Categoria*"
+                            value={categoria}
+                            onChange={handleChangeCategoria}
+                            SelectProps={{
+                                native: true,
+                            }}
+                            variant="outlined"
+                        >
+                            {categorias.map((option) => (
+                                <option key={option.value} value={option.value}>
+                                    {option.label}
+                                </option>
+                            ))}
+                        </TextField>
 
-                        </div>
-                        <h2 style={{ textAlign: "center", marginTop: '10px' }}>Complementos</h2>
-                        <div style={{ alignItems: "center", justifyContent: "center ", display: "grid", marginBottom: "10px" }}>
-                            <TextField
-                                id="link"
-                                label="Link"
-                                type="search"
-                                variant="outlined"
-                                inputProps={{ maxLength: 999 }} />
-                        </div>
-                        <form id="pdfField" method="post" encType="multipart/form-data">
-                            <input id="inputPdf" type="file" name="file" accept="application/pdf" onChange={changeHandler} style={{ marginBottom: "5px" }} />
-                        </form>
-                        <h4 style={{ fontSize: "10px" }}>Somente arquivos .pdf</h4>
-                        <Button variant="contained" color="primary" onClick={cadastrar} style={{marginTop: "10px", marginBottom: "20px"}}>
-                            Adicionar atividade
-                        </Button>
+                        <TextField
+                            style={{ marginBottom: "5px", marginTop: "5px" }}
+                            id="subcategoria"
+                            select
+                            label="Sub-Categoria*"
+                            value={subCategoria}
+                            onChange={handleChangeSubCategoria}
+                            SelectProps={{
+                                native: true,
+                            }}
+                            variant="outlined"
+                        >
+                            {subCategorias.map((option) => (
+                                <option key={option.value} value={option.value}>
+                                    {option.label}
+                                </option>
+                            ))}
+                        </TextField>
+
+                        <TextField
+                            style={{ marginBottom: "5px", marginTop: "5px" }}
+                            id="quantHoras"
+                            label="Quantidade de Horas*"
+                            type="number"
+                            defaultValue={0}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            variant="outlined"
+                            onInput={(e) => {
+                                e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 4)
+                            }}
+                        />
+
+                        <TextField
+                            style={{ marginBottom: "5px", marginTop: "5px" }}
+                            id="descricao"
+                            label="Descrição*"
+                            multiline
+                            rows={4}
+                            type="search"
+                            variant="outlined"
+                            inputProps={{ maxLength: 4999 }} />
+
+                    </div>
+                    <form id="pdfField" method="post" encType="multipart/form-data">
+                        <input id="inputPdf" type="file" name="file" accept="application/pdf" onChange={changeHandler} style={{ marginBottom: "5px" }} />
                     </form>
-
-                </Paper>
-            </div>
+                    <p style={{}}>Somente arquivos .pdf</p>
+                    <Button variant="contained" color="primary" onClick={cadastrar} style={{ marginTop: "10px", marginBottom: "20px" }}>
+                        Adicionar atividade
+                    </Button>
+                </form>
+            </Paper>
             <Copyright></Copyright>
         </div>
     );

@@ -167,13 +167,13 @@ export default function Home() {
                 }
             );
             var resJSON = await response.json();
-            if(resJSON.status_entrega === "true"){
+            if (resJSON.status_entrega === "true") {
                 setStatus(true);
             }
-            else{
+            else {
                 setStatus(false);
             }
-            
+
 
         } catch (err) {
             console.log(err)
@@ -191,31 +191,28 @@ export default function Home() {
             <NavBar></NavBar>
             <Paper elevation={12} style={{ textAlign: "center", marginTop: "20px", marginLeft: "20px", marginRight: "20px", marginBottom: "20px" }}>
                 <h1>Status das atividades:</h1>
-                {status? <h2 style={{ color: "green" }}>Atividades Aceitas</h2> : <h2 style={{ color: "red" }}>Não concluidas</h2> }
+                {status ? <h2 style={{ color: "yellow" }}>Em Homologação</h2> : <h2 style={{ color: "red" }}>Não concluidas</h2>}
                 <br></br>
             </Paper>
             <Paper elevation={12} style={{ textAlign: "center", marginTop: "20px", marginLeft: "20px", marginRight: "20px", marginBottom: "20px" }}>
 
                 <h1>Resumo das suas Atividades (Baseado em atividades cadastradas) </h1>
 
-                <div style={{ display: "flex", overflowY: "scroll", marginTop: "20px", marginLeft: "20px", marginRight: "20px", marginBottom: "20px" }}>
+                <div style={{ width: "100%" }}>
                     <Chart
-                        width={'500px'}
-                        height={'300px'}
+                        width="100%"
                         chartType="PieChart"
                         data={data}
                         options={options}
                     />
                     <Chart
-                        width={'500px'}
-                        height={'300px'}
+                        width="100%"
                         chartType="BarChart"
                         data={dataBar}
                         options={optionsBar}
                     />
                     <Chart
-                        width={'500px'}
-                        height={'300px'}
+                        width="100%"
                         chartType="BarChart"
                         data={dataTotal}
                         options={optionsTotal}

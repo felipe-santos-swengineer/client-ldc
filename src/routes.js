@@ -11,6 +11,7 @@ import Aluno_Solicitar_Avaliacao from "./pages/v_aluno/solicitarAvaliacao/Solici
 import Aluno_Historico_Avaliacoes from "./pages/v_aluno/historicoAvaliacoes/HistoricoAvaliacoes";
 import Aluno_Avaliacao_Selecionada from "./pages/v_aluno/historicoAvaliacoes/AvaliacaoSelecionada";
 import Admin_Home from "./pages/v_admin/view_inicial/Home";
+import Admin_Cadastrar_Versao from "./pages/v_admin/cadastrarVersao/CadastrarVersao";
 import Admin_Manter_Alunos from "./pages/v_admin/manterAlunos/ManterAlunos";
 import Admin_Aprovar_Alunos from "./pages/v_admin/aprovarAlunos/AprovarAlunos";
 import Admin_Cadastrar_Avaliador from "./pages/v_admin/cadastroAvaliador/CadastroAvaliador";
@@ -39,6 +40,7 @@ export default function Routes() {
                     <PrivateRoute path="/cadastroAvaliador" component={Admin_Cadastrar_Avaliador} />
                     <PrivateRoute path="/manterAvaliadores" component={Admin_Manter_Avaliadores} />
                     <PrivateRoute path="/avaliadorHome" component={Avaliador_Home} />
+                    <PrivateRoute path="/cadastrarVersao" component={Admin_Cadastrar_Versao} />
                     <PrivateRoute path="/solicitarAvaliacao" component={Aluno_Solicitar_Avaliacao} />
                     <PrivateRoute path="/avaliarAtividades" component={Avaliador_Avaliar_Atividades} />
                     <PrivateRoute path="/avaliarAtividadeSelecionada/:id" component={Avaliador_Avaliar_Atividade_Selecionada} />

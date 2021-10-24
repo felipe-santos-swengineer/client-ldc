@@ -56,7 +56,7 @@ export default function NavBar() {
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" style={{ marginBottom: "20px" }}>
         <Container>
           <Avatar alt="Icone do sistema" src="plc_logo.ico" style={{ marginRight: "10px" }}></Avatar>
-          <Navbar.Brand href="/avaliadorHome">Banco de Horas</Navbar.Brand>
+          <Navbar.Brand href="/avaliadorHome">CHRONOS-UFC</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav>

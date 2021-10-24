@@ -109,7 +109,7 @@ export default function ManterAtividades() {
         if (id === "" || id === null || id === undefined) {
             return false;
         }
-        else{
+        else {
             return true;
         }
     }
@@ -242,7 +242,7 @@ export default function ManterAtividades() {
                 setQuantHoras(atividades[i].quantidade_horas);
                 setDescricao(atividades[i].descricao);
                 setPdf(atividades[i].nome_pdf);
-                setDocLink(atividades[i].doc_link);
+                setDocLink("");
                 setSelectedDateInicio(toDate(atividades[i].data_inicio));
                 setSelectedDateFim(toDate(atividades[i].data_fim));
             }
@@ -253,9 +253,9 @@ export default function ManterAtividades() {
         setOpen(false);
     };
 
-    const handleDelete = async(id) => {
+    const handleDelete = async (id) => {
         try {
-            const body = {token}
+            const body = { token }
             const response = await fetch(Portas().serverHost + "/atividades/" + id,
                 {
                     method: "DELETE",
@@ -511,7 +511,6 @@ export default function ManterAtividades() {
                             <th>SubCategoria</th>
                             <th>QuantHoras</th>
                             <th>Descrição</th>
-                            <th>Link</th>
                             <th>Pdf</th>
                         </tr>
                     </thead>
@@ -519,49 +518,37 @@ export default function ManterAtividades() {
                         {atividades.map(atividade => (
                             <tr key={atividade.id}>
                                 <td>{atividade.titulo}</td>
-                                <td>{atividade.data_inicio.replace(/-/gi,"/")}</td>
-                                <td>{atividade.data_fim.replace(/-/gi,"/")}</td>
+                                <td>{atividade.data_inicio.replace(/-/gi, "/")}</td>
+                                <td>{atividade.data_fim.replace(/-/gi, "/")}</td>
                                 <td>{atividade.categoria}</td>
                                 <td>{atividade.sub_categoria}</td>
                                 <td>{atividade.quantidade_horas}</td>
                                 <td>{atividade.descricao}</td>
                                 <td>
-                                    {isValid(atividade.doc_link)?
-                                        <Button variant="contained" color="primary" style={{width: "110px"}} onClick={() => openLink(atividade.doc_link)} >
-                                            Abrir link
+                                    {isValid(atividade.nome_pdf) ?
+                                        <Button variant="outlined" color="primary" onClick={() => openPdf(atividade.nome_pdf)} >
+                                            Abrir
                                         </Button>
                                         :
                                         "Sem Anexo"
                                     }
                                 </td>
                                 <td>
-                                    {isValid(atividade.nome_pdf)?
-                                        <Button variant="contained" color="primary" style={{width: "110px"}} onClick={() => openPdf(atividade.nome_pdf)} >
-                                            Abrir pdf
-                                        </Button>
-                                        :
-                                        "Sem Anexo"
-                                    }
-                                </td>
-                                <td>
-                                    <button
-                                        className="btn btn-primary"
-                                        onClick={() => handleOpen(atividade.id)}
-                                    >
+                                    <Button variant="contained" color="primary" onClick={() => handleOpen(atividade.id)} >
                                         Editar
-                                    </button>
+                                    </Button>
                                     <Modal
                                         open={open}
                                         onClose={handleClose}
                                         classNames={{
-                                            
+
                                             modal: 'customModal',
-                                          }}
+                                        }}
 
                                     >
                                         <h1 style={{ textAlign: "center", marginTop: "30px" }}>Editar Atividade</h1>
-                                        <div className={classes.root}>
-                                            <form className={classes.root1} noValidate autoComplete="off">
+                                        <div>
+                                            <form  noValidate autoComplete="off">
                                                 <div style={{ alignItems: "center", justifyContent: "center ", display: "grid" }}>
                                                     <TextField
                                                         style={{ marginTop: "15px" }}
@@ -660,14 +647,6 @@ export default function ManterAtividades() {
                                                         inputProps={{ maxLength: 4999 }}
                                                         onChange={e => setDescricao(e.target.value)} />
 
-                                                    <TextField
-                                                        style={{ marginTop: "15px" }}
-                                                        label="Link"
-                                                        type="search"
-                                                        variant="outlined"
-                                                        value={docLink}
-                                                        inputProps={{ maxLength: 999 }}
-                                                        onChange={e => setDocLink(e.target.value)} />
                                                 </div>
                                                 <form method="post" encType="multipart/form-data" style={{ marginTop: "15px", textAlign: "center" }}>
                                                     <input type="file" name="file" accept="application/pdf" onChange={changeHandlerPdf} style={{ marginBottom: "5px", textAlign: "center" }} />
@@ -685,13 +664,9 @@ export default function ManterAtividades() {
                                     </Modal>
                                 </td>
                                 <td>
-                                    <button
-
-                                        className="btn btn-danger"
-                                        onClick={() => handleDelete(atividade.id)}
-                                    >
+                                    <Button variant="contained" color="secondary" onClick={() => handleDelete(atividade.id)} >
                                         Deletar
-                                    </button>
+                                    </Button>
                                 </td>
                             </tr>
                         ))}

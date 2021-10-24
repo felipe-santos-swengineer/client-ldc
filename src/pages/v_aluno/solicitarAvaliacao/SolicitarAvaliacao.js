@@ -78,17 +78,17 @@ export default function SolicitarAvaliacao() {
                 <Paper className={classes.paper}>
                     <h1 style={{ color: "blue" }}>Solicitar Avaliação</h1>
                     <p>
-                        Ao solicitar uma avaliação, a coordenação receberá todas as suas atividades cadastradas
+                        Ao solicitar uma avaliação, um membro do colegiado receberá todas as suas atividades cadastradas
                         no momento.
                     </p>
                     <p>
-                        O conselho avaliará cada uma e anexará um feedback.
+                        Ele(a) valiará cada uma e anexará um feedback se necessário.
                     </p>
                     <p>
                         Certifique-se de que a informação não está incorreta e/ou desatualizada!
                     </p>
                     <p style={{ color: "orange" }}>
-                        Você poderá solicitar múltiplas avaliações, mas tente reunir o máximo de atividades possivel antes de solicitar uma nova,
+                        Você poderá solicitar múltiplas avaliações (Uma de cada vez), portanto tente reunir o máximo de atividades possivel antes de solicitar uma nova,
                         pois demandará tempo para ser respondido.
                     </p>
                     <p style={{ color: "red" }}>
