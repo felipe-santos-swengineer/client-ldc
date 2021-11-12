@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
@@ -8,6 +8,11 @@ import Box from '@material-ui/core/Box';
 import NavBar from '../NavBar';
 import TextField from '@material-ui/core/TextField';
 import { CategoryOutlined } from '@material-ui/icons';
+
+
+//modal
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button'
 
 
 function TabPanel(props) {
@@ -56,17 +61,22 @@ const useStyles = makeStyles((theme) => ({
 
 export default function VerticalTabs() {
     const classes = useStyles();
+
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
     const [value, setValue] = React.useState(0);
+
     const [categorias, setCategorias] = React.useState([
         { id: 1, nome: "Atividades de iniciação à docência", horas: 96 },
         { id: 2, nome: "Atividades de iniciação à pesquisa", horas: 96 },
         { id: 3, nome: "Atividades de extensão", horas: 96 },
     ]);
     const [subCategorias, setSubCategorias] = React.useState([
-        { categoria: 1, id: 1, nome: "Atividades de iniciação à docência;" },
+        { categoria: 1, id: 1, nome: "Atividades de iniciação à docência" },
         { categoria: 2, id: 1, nome: "Atividades de iniciação à pesquisa" },
         { categoria: 3, id: 1, nome: "Atividades de extensão" },
-        { categoria: 3, id: 2, nome: "Atividades de iniciação à docência;" },
+        { categoria: 3, id: 2, nome: "Atividades de iniciação à docência" },
         { categoria: 2, id: 2, nome: "Atividades de iniciação à pesquisa" },
         { categoria: 1, id: 2, nome: "Atividades de extensão" },
     ]);
@@ -152,34 +162,6 @@ export default function VerticalTabs() {
     return (
         <div>
             <NavBar></NavBar>
-            <div style={{ display: "flex" }}>
-                <div style={{ width: "25%" }}></div>
-                <div style={{ backgroundColor: "white", display: "grid", width: "50%" }}>
-                    <TextField
-                        style={{ marginTop: "5px" }}
-                        id="titulo"
-                        label="Nome*"
-                        type="search"
-                        variant="outlined"
-                        inputProps={{ maxLength: 199 }}
-                    />
-                    <TextField
-                        style={{ marginBottom: "5px", marginTop: "5px" }}
-                        id="quantHoras"
-                        label="Quantidade de Horas*"
-                        type="number"
-                        defaultValue={0}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        variant="outlined"
-                        onInput={(e) => {
-                            e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 4)
-                        }}
-                    />
-                </div>
-                <div style={{ width: "25%" }}></div>
-            </div>
             <button
                 style={{ backgroundColor: "#4B0082", border: "none" }}
                 className="btn btn-success"
@@ -223,8 +205,23 @@ export default function VerticalTabs() {
                 {categorias.map((item, index) => (
                     <TabPanel value={value} index={index}>
                         {subCategorias.map((item) => (item.categoria === index + 1 ?
-                            <div style={{ display: "flex" }}>
+                            <div style={{ display: "flex", marginTop: "1vw" }}>
                                 {romanize(item.id) + "-" + item.nome}
+                                <button style={{ marginLeft: "1vw" }} onClick={handleShow}>Editar</button>
+                                <Modal show={show} onHide={handleClose}>
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>Editando:  {item.nome}</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+                                    <Modal.Footer>
+                                        <Button variant="secondary" onClick={handleClose}>
+                                            Close
+                                        </Button>
+                                        <Button variant="primary" onClick={handleClose}>
+                                            Save Changes
+                                        </Button>
+                                    </Modal.Footer>
+                                </Modal>
                             </div> : <div></div>))}
                     </TabPanel>))}
             </div>
