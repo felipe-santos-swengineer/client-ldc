@@ -8,11 +8,15 @@ import Box from '@material-ui/core/Box';
 import NavBar from '../NavBar';
 import TextField from '@material-ui/core/TextField';
 import Copyright from "../../../components/copyright/Copyright";
+import Portas from "../../../portas";
 
 
 //modal
 import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button'
+import Button from 'react-bootstrap/Button';
+
+import StoreContext from '../../../components/Store/Context';
+import { useContext } from 'react';
 
 
 function TabPanel(props) {
@@ -62,6 +66,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function VerticalTabs() {
     const classes = useStyles();
+    const { token } = useContext(StoreContext);
 
     //Categoria Vars
     const [value, setValue] = React.useState(0);
@@ -85,12 +90,36 @@ export default function VerticalTabs() {
         { categoria: 1, id: 2, nome: "Atividades de extensão" },
     ]);
 
+    //Salvar alterações
+    const [salvarAlteracoes, setSalvarAlteracoes] = useState(false);
 
+    const handleCloseSA = () => setSalvarAlteracoes(false);
+
+    const handleShowSA = () => {
+        setSalvarAlteracoes(true);
+    }
+
+    const putVersao = async (vNome, vHoras) => {
+            try {
+                const body = { categorias, subCategorias, token, vNome, vHoras };
+                const response = await fetch(Portas().serverHost + "/adicionarVersao", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(body)
+                });
+
+                var resJSON = await response.json();
+                alert(resJSON);
+                //window.location = "/manterAtividades";
+
+            } catch (err) {
+                console.log(err.message);
+            }
+    }
 
     //CRUD CATEGORIAS
 
     const handleChange = (event, newValue) => {
-        //alert(newValue);
         setValue(newValue);
     };
 
@@ -319,6 +348,46 @@ export default function VerticalTabs() {
                     </Button>
                 </Modal.Footer>
             </Modal>
+            <Modal show={salvarAlteracoes} onHide={handleCloseSA}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Finalizar edição</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="nomeVersao"
+                        label="Identificador da Versão"
+                        placeholder="2021.1"
+                        inputProps={{ maxLength: 199 }}
+                    />
+                    <TextField
+                        style={{ marginBottom: "5px", marginTop: "5px" }}
+                        id="quantHoras"
+                        label="Horas necessárias"
+                        required
+                        type="number"
+                        defaultValue={1}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        variant="outlined"
+                        onInput={(e) => {
+                            e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 4)
+                        }}
+                    />
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseSA}>
+                        Cancelar
+                    </Button>
+                    <Button variant="primary" onClick={() => putVersao(document.getElementById("nomeVersao").value, document.getElementById("quantHoras").value )}>
+                        Confirmar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
             <div style={{ marginBottom: "5px", display: "flex", justifyItems: "center", alignItems: "center", justifyContent: "center", alignContent: "center" }}>
                 <button
                     style={{ marginLeft: "3px", backgroundColor: "#4B0082", border: "none" }}
@@ -379,6 +448,7 @@ export default function VerticalTabs() {
                 <button
                     style={{ backgroundColor: "green", border: "none", }}
                     className="btn btn-danger"
+                    onClick={handleShowSA}
                 >
                     Atualizar Versão
                 </button>

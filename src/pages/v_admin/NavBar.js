@@ -64,8 +64,7 @@ export default function NavBar() {
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav>
               <NavDropdown title="Controle de Categorias" id="basic-nav-dropdown">
-                <NavDropdown.Item href="/cadastrarVersao">Cadastrar nova Versão</NavDropdown.Item>
-                <NavDropdown.Item href="/manterVersoes">Manter versões</NavDropdown.Item>
+                <NavDropdown.Item href="/cadastrarVersao">Manter Categorias</NavDropdown.Item>
               </NavDropdown>
               <NavDropdown title="Controle de Alunos" id="basic-nav-dropdown">
                 <NavDropdown.Item href="/aprovarAlunos">Aprovar Alunos</NavDropdown.Item>
