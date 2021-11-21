@@ -3,7 +3,7 @@ import NavBar from "../NavBar";
 import Portas from "../../../portas";
 import Paper from '@material-ui/core/Paper';
 import Table from 'react-bootstrap/Table';
-import Copyright from "../../copyright/Copyright";
+import Copyright from "../../../components/copyright/Copyright";
 
 //auth
 import StoreContext from '../../../components/Store/Context';

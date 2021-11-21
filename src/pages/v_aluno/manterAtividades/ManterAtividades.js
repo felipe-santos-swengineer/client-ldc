@@ -13,43 +13,14 @@ import TextField from '@material-ui/core/TextField';
 import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
 import Path from "path";
-import Copyright from "../../copyright/Copyright";
+import Copyright from "../../../components/copyright/Copyright";
 import "./manterAtividades.css";
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
 
 //auth
 import StoreContext from '../../../components/Store/Context';
 import { useContext } from 'react';
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        '& > *': {
-            margin: theme.spacing(1),
-        },
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: "center",
-        overflowX: "auto",
-    }, paper: {
-        marginLeft: "10px",
-        marginRight: "10px",
-        paddingRight: "10px",
-        paddingLeft: "10px",
-        overflowX: "auto",
-    },
-    root1: {
-        '& .MuiTextField-root': {
-            margin: theme.spacing(1),
-            width: '25ch',
-        },
-    },
-
-}));
-
 
 var categorias = [
     { value: 'I', label: 'I', }, { value: 'II', label: 'II', }, { value: 'III', label: 'III', }, { value: 'IV', label: 'IV', }, { value: 'V', label: 'V', }, { value: 'VI', label: 'VI', }, { value: 'VII', label: 'VII', },
@@ -87,7 +58,6 @@ var subCategoriasVII = [
 
 export default function ManterAtividades() {
     const { token } = useContext(StoreContext);
-    const classes = useStyles();
     const [atividades, setAtividades] = useState([]);
     const [open, setOpen] = React.useState(false);
     const [titulo, setTitulo] = useState();
@@ -188,13 +158,6 @@ export default function ManterAtividades() {
         getAtividades();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const openLink = (id) => {
-        if (id === "" || id === null || id === undefined) {
-            alert("Não foi cadastrado Link nessa atividade");
-            return;
-        }
-        window.open(id, '_blank');
-    }
 
     const openPdf = (id) => {
         if (id === "" || id === null || id === undefined) {

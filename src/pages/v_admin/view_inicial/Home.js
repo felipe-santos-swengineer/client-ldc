@@ -1,6 +1,6 @@
 import React from "react";
 import NavBar from "../NavBar";
-import Copyright from "../../copyright/Copyright";
+import Copyright from "../../../components/copyright/Copyright";
 
 export default function Home() {
     return(

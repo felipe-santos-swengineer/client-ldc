@@ -7,7 +7,7 @@ import NavBar from '../NavBar';
 import Grid from '@material-ui/core/Grid';
 import Portas from "../../../portas";
 import validator from 'validator';
-import Copyright from "../../copyright/Copyright";
+import Copyright from "../../../components/copyright/Copyright";
 
 //auth
 import StoreContext from '../../../components/Store/Context';

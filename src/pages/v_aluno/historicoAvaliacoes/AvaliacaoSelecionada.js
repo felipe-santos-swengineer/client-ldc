@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../NavBar";
 import Portas from "../../../portas";
-import Copyright from "../../copyright/Copyright";
+import Copyright from "../../../components/copyright/Copyright";
 import Paper from '@material-ui/core/Paper';
 import Table from 'react-bootstrap/Table';
 import Button from '@material-ui/core/Button';
@@ -26,13 +26,6 @@ export default function AvaliacaoSelecionada(){
         }
     }
 
-    const openLink = (id) => {
-        if (id === "" || id === null || id === undefined) {
-            alert("Não foi cadastrado Link nessa atividade");
-            return;
-        }
-        window.open(id, '_blank');
-    }
 
     const openPdf = (id) => {
         console.log("entrei id: " + id);

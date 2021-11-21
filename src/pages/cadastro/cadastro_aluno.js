@@ -11,20 +11,10 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import validator from 'validator';
 import Portas from "../../portas";
+import Copyright from "../../components/copyright/Copyright";
 const { v4: uuidv4 } = require('uuid');
 
-function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'Direitos reservados ©'}
-            <Link color="blue" href="https://team-pldc.herokuapp.com/" target="_blank">
-                Projeto Linha de Chegada
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+
 
 const useStyles = makeStyles((theme) => ({
     root: {

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
@@ -12,36 +11,12 @@ import Button from '@material-ui/core/Button';
 import NavBar from '../NavBar';
 import Portas from "../../../portas";
 import Path from "path";
-import Copyright from "../../copyright/Copyright";
+import Copyright from "../../../components/copyright/Copyright";
 
 //auth
 import StoreContext from '../../../components/Store/Context';
 import { useContext } from 'react';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        '& > *': {
-            margin: theme.spacing(1),
-        },
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: "center",
-    }, paper: {
-        marginLeft: "10px",
-        marginRight: "10px",
-        paddingRight: "10px",
-        paddingLeft: "10px",
-    },
-    root1: {
-        '& .MuiTextField-root': {
-            margin: theme.spacing(1),
-            width: '25ch',
-        },
-    },
-
-}));
 
 var categorias = [
     { value: 'I', label: 'I', }, { value: 'II', label: 'II', }, { value: 'III', label: 'III', }, { value: 'IV', label: 'IV', }, { value: 'V', label: 'V', }, { value: 'VI', label: 'VI', }, { value: 'VII', label: 'VII', },
@@ -80,7 +55,7 @@ var subCategoriasVII = [
 
 
 export default function FormPropsTextFields() {
-    const classes = useStyles();
+
     const [categoria, setCategoria] = React.useState('');
     const [subCategoria, setSubCategoria] = React.useState('');
     const [selectedFile, setSelectedFile] = useState();
@@ -383,7 +358,7 @@ export default function FormPropsTextFields() {
     return (
         <div>
             <NavBar></NavBar>
-            <Paper elevation={12} style={{ textAlign: "center", marginTop: "10px", marginLeft: "20px", marginRight: "20px", marginBottom: "10px" }} elevation={12}>
+            <Paper elevation={12} style={{ textAlign: "center", marginTop: "10px", marginLeft: "20px", marginRight: "20px", marginBottom: "10px" }}>
                 <form noValidate autoComplete="off">
                     <h2 style={{ textAlign: "center", marginTop: '10px' }}>Formulário de Cadastro</h2>
                     <div style={{ alignItems: "center", justifyContent: "center ", display: "grid", }}>

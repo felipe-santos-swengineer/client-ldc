@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../NavBar";
 import Portas from "../../../portas";
-import Copyright from "../../copyright/Copyright";
+import Copyright from "../../../components/copyright/Copyright";
 import Paper from '@material-ui/core/Paper';
 import Table from 'react-bootstrap/Table';
 import Button from '@material-ui/core/Button';

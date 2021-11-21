@@ -1,5 +1,5 @@
 import NavBar from "../NavBar";
-import Copyright from "../../copyright/Copyright";
+import Copyright from "../../../components/copyright/Copyright";
 import Paper from '@material-ui/core/Paper';
 
 export default function Home() {

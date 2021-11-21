@@ -3,7 +3,7 @@ import NavBar from "../NavBar";
 import Paper from '@material-ui/core/Paper';
 import { Chart } from "react-google-charts";
 import Portas from "../../../portas";
-import Copyright from "../../copyright/Copyright";
+import Copyright from "../../../components/copyright/Copyright";
 
 
 //auth
@@ -201,18 +201,22 @@ export default function Home() {
                 <div style={{ width: "100%" }}>
                     <Chart
                         width="100%"
+                        height= "300px"
                         chartType="PieChart"
                         data={data}
                         options={options}
                     />
+                    
+                </div>
+                <div style={{ width: "90vw", display: "flex" }}>
                     <Chart
-                        width="100%"
+                        width="45vw"
                         chartType="BarChart"
                         data={dataBar}
                         options={optionsBar}
                     />
                     <Chart
-                        width="100%"
+                        width="45vw"
                         chartType="BarChart"
                         data={dataTotal}
                         options={optionsTotal}
