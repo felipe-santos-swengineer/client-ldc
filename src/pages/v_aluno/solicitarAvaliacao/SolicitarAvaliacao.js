@@ -33,42 +33,63 @@ export default function SolicitarAvaliacao() {
     const classes = useStyles();
     const { token } = useContext(StoreContext);
 
-    const solicitar = async() => {
+    const solicitar = async () => {
         try {
-            //verificar se o aluno tem atividades cadastradas
-            const response = await fetch(Portas().serverHost + "/atividades/" + token,
+            const response = await fetch(Portas().serverHost + "/alunos/bytoken/" + token,
                 {
                     method: "GET",
                 }
             );
             var resJSON = await response.json();
-            
-            if(resJSON.length < 1){
-                alert("Não há atividades cadastradas!");
+            if (resJSON.status_entrega === "Em Homologação") {
+                alert("Não pode solicitaçar avaliação durante homologação")
                 return;
             }
 
-            try{
-                //verificar disponibilidade de avaliador
-                const response = await fetch(Portas().serverHost + "/solicitacao/" + token,
-                {
-                    method: "GET",
+            if (resJSON.status_entrega === "Atividades entregues") {
+                alert("Atividades já foram entregues")
+                return;
+            }
+
+            try {
+                //verificar se o aluno tem atividades cadastradas
+                const response = await fetch(Portas().serverHost + "/atividades/" + token,
+                    {
+                        method: "GET",
+                    }
+                );
+                var resJSON = await response.json();
+
+                if (resJSON.length < 1) {
+                    alert("Não há atividades cadastradas!");
+                    return;
                 }
-            );
-            var resJSON1 = await response.json();
-            alert(resJSON1);
-            window.location = "/historicoAvaliacao";
-            return;
 
 
-            }catch(err){
-                alert("Um erro ocorreu");
-                return;
+                try {
+                    //verificar disponibilidade de avaliador
+                    const response = await fetch(Portas().serverHost + "/solicitacao/" + token,
+                        {
+                            method: "GET",
+                        }
+                    );
+                    var resJSON1 = await response.json();
+                    alert(resJSON1);
+                    window.location = "/historicoAvaliacao";
+                    return;
+
+
+                } catch (err) {
+                    alert("Um erro ocorreu");
+                    return;
+                }
+            } catch (err) {
+                alert(err);
             }
-
         } catch (err) {
             alert(err);
         }
+
     }
 
     return (

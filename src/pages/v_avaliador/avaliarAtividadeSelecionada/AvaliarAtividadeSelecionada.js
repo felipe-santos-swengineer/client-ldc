@@ -17,6 +17,9 @@ export default function AvaliarAtividadeSelecionada() {
     const { id } = useParams();
     const { token } = useContext(StoreContext);
     const [atividades, setAtividades] = useState([]);
+    const [versao, setVersao] = useState("");
+    const [categorias, setCategorias] = React.useState([]);
+    const [subCategorias, setSubCategorias] = React.useState([]);
 
     const isValid = (id) => {
         if (id === "" || id === null || id === undefined) {
@@ -25,6 +28,17 @@ export default function AvaliarAtividadeSelecionada() {
         else {
             return true;
         }
+    }
+
+    function romanize(num) {
+        var lookup = { M: 1000, CM: 900, D: 500, CD: 400, C: 100, XC: 90, L: 50, XL: 40, X: 10, IX: 9, V: 5, IV: 4, I: 1 }, roman = '', i;
+        for (i in lookup) {
+            while (num >= lookup[i]) {
+                roman += i;
+                num -= lookup[i];
+            }
+        }
+        return roman;
     }
 
     const openLink = (id) => {
@@ -80,91 +94,85 @@ export default function AvaliarAtividadeSelecionada() {
         }
     }
 
+    const getNewAtividades = async () => {
+        try {
+
+            const body = { token, id };
+            const response = await fetch(Portas().serverHost + "/atividadesAvaliacao", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
+
+            var resJSON = await response.json();
+            finalizarSubmissao(id, resJSON);
+
+        } catch (err) {
+            alert(err);
+        }
+    }
+
+    const getVersao = async () => {
+        try {
+            const response = await fetch(Portas().serverHost + "/versao-solicitada/" + id,
+                {
+                    method: "GET",
+                }
+            );
+            var resJSON = await response.json();
+            setCategorias(resJSON[0]);
+            setSubCategorias(resJSON[1]);
+            setVersao(resJSON[2]);
+
+        } catch (err) {
+            alert(err);
+        }
+    }
+
     useEffect(() => {
+        getVersao();
         getAtividades();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 
-    const finalizarSubmissao = async (id_avaliacao) => {
-
+    const finalizarSubmissao = async (id_avaliacao, atividades) => {
         //calcular se aluno entregou as atividades
-        var i_ = 0;
-        var ii_ = 0;
-        var iii_ = 0;
-        var iv_ = 0;
-        var v_ = 0;
-        var vi_ = 0;
-        var vii_ = 0;
-        for (var j = 0; j < atividades.length; j++) {
-            switch (atividades[j].categoria) {
-                case 'I':
-                    i_ = i_ + parseFloat(atividades[j].quantidade_horas);
-                    break;
-                case 'II':
-                    ii_ = ii_ + parseFloat(atividades[j].quantidade_horas);
-                    break;
-                case 'III':
-                    iii_ = iii_ + parseFloat(atividades[j].quantidade_horas);
-                    break;
-                case 'IV':
-                    iv_ = iv_ + parseFloat(atividades[j].quantidade_horas);
-                    break;
-                case 'V':
-                    v_ = v_ + parseFloat(atividades[j].quantidade_horas);
-                    break;
-                case 'VI':
-                    vi_ = vi_ + parseFloat(atividades[j].quantidade_horas);
-                    break;
-                case 'VII':
-                    vii_ = vii_ + parseFloat(atividades[j].quantidade_horas);
-                    break;
-                default:
-                    console.log("Algo inesperado ocorreu");
+
+        var soma = 0;
+        var somaTotal = 0;
+
+        //alert(categorias.length + " " + atividades.length)
+
+        for (var j = 0; j < categorias.length; j++) {
+            for (var i = 0; i < atividades.length; i++) {
+                if (categorias[j].id == atividades[i].categoria) {
+                    soma = soma + parseFloat(atividades[i].horas_validas);
+                }
             }
+            console.log(soma)
+            if (soma > parseFloat(categorias[j].horas)) {
+                soma = parseFloat(categorias[j].horas)
+            }
+            somaTotal = somaTotal + soma;
+            soma = 0;
         }
 
-        console.log(i_ + " " + ii_ + " " + iii_ + " " + iv_ + " " + v_ + " " + vi_ + " " + vii_);
-
-        if (i_ > 96) {
-            i_ = 96;
-        }
-        if (ii_ > 64) {
-            ii_ = 64;
-        }
-        if (iii_ > 32) {
-            iii_ = 32;
-        }
-        if (iv_ > 64) {
-            iv_ = 64;
-        }
-        if (v_ > 96) {
-            v_ = 96;
-        }
-        if (vi_ > 48) {
-            vi_ = 48;
-        }
-        if (vii_ > 48) {
-            vii_ = 48;
-        }
-
-        var soma = i_ + ii_ + iii_ + iv_ + v_ + vi_ + vii_;
-        if(soma >= 288){
+        if (somaTotal >= parseFloat(versao.horas)) {
             try {
-                const body = { id_avaliacao,token }
+                const body = { id_avaliacao, token }
                 const response = await fetch(Portas().serverHost + "/aprovarAtividades", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(body)
                 });
-    
+
                 var resJSON1 = await response.json();
                 console.log(resJSON1);
-    
+
             }
             catch (err) {
             }
         }
-
 
         try {
             const body = { id_avaliacao, token }
@@ -191,7 +199,7 @@ export default function AvaliarAtividadeSelecionada() {
 
         const update = async (id, feedback, quantHoras) => {
             try {
-                const body = { id, token, quantHoras, feedback}
+                const body = { id, token, quantHoras, feedback }
                 const response = await fetch(Portas().serverHost + "/enviarAvaliacao", {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
@@ -203,7 +211,7 @@ export default function AvaliarAtividadeSelecionada() {
                 successCount += 1;
 
                 if (successCount === atividades.length) {
-                    finalizarSubmissao(atividades[0].id_avaliacao);
+                    getNewAtividades();
                 }
 
             }
@@ -221,10 +229,10 @@ export default function AvaliarAtividadeSelecionada() {
             if (itemFeedback === "") {
                 itemFeedback = "Atividade sem irregularidades";
             }
-            
+
             itemHoras = parseInt(document.getElementById("quantHoras-" + atividades[i].id).value, 10);
-            if (itemHoras >= 0) {}
-            else{
+            if (itemHoras >= 0) { }
+            else {
                 itemHoras = 0;
             }
 
@@ -232,12 +240,12 @@ export default function AvaliarAtividadeSelecionada() {
         }
     }
 
-
     return (
         <div>
             <NavBar></NavBar>
             <Paper elevation={12} style={{ marginLeft: "10px", marginRight: "10px", marginBottom: "10px" }}>
                 <h4 style={{ marginTop: "15px", textAlign: "center", fontSize: "10px", color: "orange" }}>Se o campo de feedback ficar vazio, o sistema automaticamente sustituirá por "Atividade sem irregularidades"</h4>
+                <p style={{textAlign: "center"}}>Versão do manual no momento solicitação: {versao.nome}</p>
                 <Table responsive>
                     <thead>
                         <tr>
@@ -251,7 +259,7 @@ export default function AvaliarAtividadeSelecionada() {
                             <th>Link</th>
                             <th>Pdf</th>
                             <th>Horas Validas</th>
-                            <th>FeedBack</th>
+                            <th>Feedback</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -260,8 +268,8 @@ export default function AvaliarAtividadeSelecionada() {
                                 <td>{atividade.titulo}</td>
                                 <td>{atividade.data_inicio.replace(/-/gi, "/")}</td>
                                 <td>{atividade.data_fim.replace(/-/gi, "/")}</td>
-                                <td>{atividade.categoria}</td>
-                                <td>{atividade.sub_categoria}</td>
+                                <td>{romanize(atividade.categoria)}</td>
+                                <td>{romanize(atividade.sub_categoria)}</td>
                                 <td>{atividade.quantidade_horas}</td>
                                 <td>{atividade.descricao}</td>
                                 <td>
@@ -317,7 +325,6 @@ export default function AvaliarAtividadeSelecionada() {
                     </button>
                 </div>
             </Paper>
-
             <Copyright></Copyright>
         </div >
     )

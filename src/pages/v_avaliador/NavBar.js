@@ -25,8 +25,7 @@ export default function NavBar() {
         );
 
         const resJSON = await response.json();
-        console.log(resJSON);
-
+    
         if (resJSON === "aluno") {
           window.location = "/alunoHome"
           return;

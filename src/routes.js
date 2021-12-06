@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Login from "./pages/login/Login";
 import Aluno_Home from "./pages/v_aluno/view_inicial/Home";
 import Aluno_Cadastro from "./pages/cadastro/cadastro_aluno";
+import Aluno_Perfil from "./pages/v_aluno/perfil/Perfil";
 import Aluno_Cadastrar_Atividade from "./pages/v_aluno/cadastro_horas/CadastrarAtividade";
 import Aluno_Manter_Atividades from "./pages/v_aluno/manterAtividades/ManterAtividades";
 import Aluno_Solicitar_Avaliacao from "./pages/v_aluno/solicitarAvaliacao/SolicitarAvaliacao";
@@ -16,9 +17,13 @@ import Admin_Manter_Alunos from "./pages/v_admin/manterAlunos/ManterAlunos";
 import Admin_Aprovar_Alunos from "./pages/v_admin/aprovarAlunos/AprovarAlunos";
 import Admin_Cadastrar_Avaliador from "./pages/v_admin/cadastroAvaliador/CadastroAvaliador";
 import Admin_Manter_Avaliadores from "./pages/v_admin/manterAvaliadores/ManterAvaliadores";
+import Admin_Homologar_Alunos from "./pages/v_admin/homologarEntrega/HomologarEntrega";
+import Admin_Entregas_Homologadas from "./pages/v_admin/homologarEntrega/EntregasHomologadas";
 import Avaliador_Home from "./pages/v_avaliador/view_inicial/Home";
 import Avaliador_Avaliar_Atividades from "./pages/v_avaliador/avaliarAtividades/AvaliarAtividades";
 import Avaliador_Avaliar_Atividade_Selecionada from "./pages/v_avaliador/avaliarAtividadeSelecionada/AvaliarAtividadeSelecionada";
+import Avaliador_Historico_Avaliacoes from "./pages/v_avaliador/historicoAvaliacoes/HistoricoAvaliacoes";
+import Avaliador_Avaliacao_selecionada from "./pages/v_avaliador/historicoAvaliacoes/AvaliacaoSelecionada";
 
 //auth
 import StoreProvider from './components/Store/Provider';
@@ -46,6 +51,11 @@ export default function Routes() {
                     <PrivateRoute path="/avaliarAtividadeSelecionada/:id" component={Avaliador_Avaliar_Atividade_Selecionada} />
                     <PrivateRoute path="/historicoAvaliacao" component={Aluno_Historico_Avaliacoes} />
                     <PrivateRoute path="/avaliacaoSelecionada/:id" component={Aluno_Avaliacao_Selecionada} />
+                    <PrivateRoute path="/historicoAvaliacoes" component={Avaliador_Historico_Avaliacoes} />
+                    <PrivateRoute path="/avaliadorAvaliacaoSelecionada/:id" component={Avaliador_Avaliacao_selecionada} />
+                    <PrivateRoute path="/homologarEntrega" component={Admin_Homologar_Alunos} />
+                    <PrivateRoute path="/entregasHomologadas" component={Admin_Entregas_Homologadas} />
+                    <PrivateRoute path="/alunoPerfil" component={Aluno_Perfil} />
                 </Switch>
             </StoreProvider>
         </BrowserRouter>

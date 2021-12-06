@@ -27,7 +27,6 @@ export default function NavBar() {
         );
 
         const resJSON = await response.json();
-        console.log(resJSON);
 
         if (resJSON === "aluno") {
           window.location = "/alunoHome"
@@ -67,8 +66,10 @@ export default function NavBar() {
                 <NavDropdown.Item href="/cadastrarVersao">Manter Categorias</NavDropdown.Item>
               </NavDropdown>
               <NavDropdown title="Controle de Alunos" id="basic-nav-dropdown">
-                <NavDropdown.Item href="/aprovarAlunos">Aprovar Alunos</NavDropdown.Item>
+                <NavDropdown.Item href="/aprovarAlunos">Conceder Acesso</NavDropdown.Item>
                 <NavDropdown.Item href="/manterAlunos">Manter Alunos</NavDropdown.Item>
+                <NavDropdown.Item href="/homologarEntrega">Homologar Entrega</NavDropdown.Item>
+                <NavDropdown.Item href="/entregasHomologadas">Entregas Homologadas</NavDropdown.Item>
               </NavDropdown>
               <NavDropdown title="Controle de Avaliadores" id="basic-nav-dropdown">
                 <NavDropdown.Item href="/cadastroAvaliador">Cadastrar Avaliador</NavDropdown.Item>

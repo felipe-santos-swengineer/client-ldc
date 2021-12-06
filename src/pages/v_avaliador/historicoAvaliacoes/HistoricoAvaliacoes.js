@@ -1,18 +1,17 @@
-import NavBar from "../NavBar";
-import Copyright from "../../../components/copyright/Copyright";
 import React, { useEffect, useState } from "react";
+import NavBar from "../NavBar";
 import Portas from "../../../portas";
+import Copyright from "../../../components/copyright/Copyright";
 import Paper from '@material-ui/core/Paper';
 import Table from 'react-bootstrap/Table';
 import Button from '@material-ui/core/Button';
-
 
 //auth
 import StoreContext from '../../../components/Store/Context';
 import { useContext } from 'react';
 
+export default function HistoricoAvaliacoes(){
 
-export default function AvaliarAtividades() {
     const { token } = useContext(StoreContext);
     const [solicitacoes, setSolicitacoes] = useState([]);
 
@@ -26,7 +25,7 @@ export default function AvaliarAtividades() {
             var resJSON = await response.json();
             var array = [];
             for(var i = 0; i < resJSON.length; i++){
-                if(resJSON[i].status === "Pendente"){
+                if(resJSON[i].status !== "Pendente"){
                     array.push(resJSON[i])
                 }
             }
@@ -48,13 +47,11 @@ export default function AvaliarAtividades() {
         return timestamp;
     }
 
-
     const avaliar = (id) => {
-        console.log(id);
-        window.location = "/avaliarAtividadeSelecionada/" + id;
+        window.location = "avaliadorAvaliacaoSelecionada/" + id;
     }
 
-    return (
+    return(
         <div>
             <NavBar></NavBar>
             <Paper elevation={12} style={{ marginLeft: "10px", marginRight: "10px", marginBottom: "10px" }}>
@@ -62,7 +59,6 @@ export default function AvaliarAtividades() {
                     <thead>
                         <tr>
                             <th>Id Submissão</th>
-                            <th>Aluno</th>
                             <th>Status</th>
                             <th>Data de solicitação</th>
                         </tr>
@@ -71,13 +67,12 @@ export default function AvaliarAtividades() {
                         {solicitacoes.map(solicitacao => (
                             <tr key={solicitacao.id}>
                                 <td>{solicitacao.id}</td>
-                                <td>{solicitacao.token_aluno}</td>
                                 <td>{solicitacao.status}</td>
                                 <td>{dataFormatoBr(solicitacao.data_criacao)}</td>
                                 <td>
-                                    {solicitacao.status === "Pendente" &&
+                                    {solicitacao.status === "Avaliado" &&
                                         <Button variant="contained" color="primary" onClick={() => avaliar(solicitacao.id)}>
-                                            Avaliar
+                                            Ver Avaliação
                                         </Button>
                                     }
                                 </td>
@@ -88,6 +83,6 @@ export default function AvaliarAtividades() {
             </Paper>
             <Copyright></Copyright>
         </div>
-    )
 
+    )
 }

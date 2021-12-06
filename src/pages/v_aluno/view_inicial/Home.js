@@ -11,82 +11,54 @@ import StoreContext from '../../../components/Store/Context';
 import { useContext } from 'react';
 
 
-export default function Home() {
+export default function Home(){
     const { token } = useContext(StoreContext);
-    const [status, setStatus] = useState(false);
+    const [status, setStatus] = useState("");
     const [options, setOptions] = useState();
     const [optionsBar, setOptionsBar] = useState();
-    const [data, setData] = useState([]);
-    const [dataTotal, setDataTotal] = useState(
+    const [data, setData] = useState([
+        ["A", "Horas Inseridas"],
+        ["Nenhuma", 1]
 
-    );
+    ]);
+    const [aluno, setAluno] = useState([]);
+    const [dataTotal, setDataTotal] = useState([]);
     const [optionsTotal, setOptionsTotal] = useState();
     const [dataBar, setDataBar] = useState([]);
 
-    const somarAtividades = (resJSON) => {
-        //somar atividades
-        var i_ = 0;
-        var ii_ = 0;
-        var iii_ = 0;
-        var iv_ = 0;
-        var v_ = 0;
-        var vi_ = 0;
-        var vii_ = 0;
-        console.log(i_ + " " + ii_ + " " + iii_ + " " + iv_ + " " + v_ + " " + vi_ + " " + vii_)
-        console.log(resJSON);
-        for (var j = 0; j < resJSON.length; j++) {
-            switch (resJSON[j].categoria) {
-                case 'I':
-                    i_ = i_ + parseFloat(resJSON[j].quantidade_horas);
-                    break;
-                case 'II':
-                    ii_ = ii_ + parseFloat(resJSON[j].quantidade_horas);
-                    break;
-                case 'III':
-                    iii_ = iii_ + parseFloat(resJSON[j].quantidade_horas);
-                    break;
-                case 'IV':
-                    iv_ = iv_ + parseFloat(resJSON[j].quantidade_horas);
-                    break;
-                case 'V':
-                    v_ = v_ + parseFloat(resJSON[j].quantidade_horas);
-                    break;
-                case 'VI':
-                    vi_ = vi_ + parseFloat(resJSON[j].quantidade_horas);
-                    break;
-                case 'VII':
-                    vii_ = vii_ + parseFloat(resJSON[j].quantidade_horas);
-                    break;
-                default:
-                    console.log("Algo inesperado ocorreu");
+    function romanize(num) {
+        var lookup = { M: 1000, CM: 900, D: 500, CD: 400, C: 100, XC: 90, L: 50, XL: 40, X: 10, IX: 9, V: 5, IV: 4, I: 1 }, roman = '', i;
+        for (i in lookup) {
+            while (num >= lookup[i]) {
+                roman += i;
+                num -= lookup[i];
             }
         }
+        return roman;
+    }
 
-        console.log(i_ + " " + ii_ + " " + iii_ + " " + iv_ + " " + v_ + " " + vi_ + " " + vii_);
-        //tratar excessoes
+    const somarAtividades = (categorias, subCategorias, versao, atividades) => {
+        //somar atividades
+        var data = [["A", "Horas Inseridas"]];
+        var data2 = [['Categorias', 'Horas Cadastradas', 'Limite da categoria']]
+        var soma = 0;
+        var somaTotal = 0;
 
-        if (i_ > 96) {
-            i_ = 96;
+        for (var j = 0; j < categorias.length; j++) {
+            for (var i = 0; i < atividades.length; i++) {
+                if(categorias[j].id == atividades[i].categoria) {
+                    soma = soma + parseFloat(atividades[i].quantidade_horas);
+                }
+            }
+            if(soma > parseFloat(categorias[j].horas)){
+                soma = parseFloat(categorias[j].horas)
+            }
+            data.push([romanize(categorias[j].id), soma]);
+            data2.push([romanize(categorias[j].id), soma, parseFloat(categorias[j].horas)])
+            somaTotal = somaTotal + soma;
+            soma = 0;
         }
-        if (ii_ > 64) {
-            ii_ = 64;
-        }
-        if (iii_ > 32) {
-            iii_ = 32;
-        }
-        if (iv_ > 64) {
-            iv_ = 64;
-        }
-        if (v_ > 96) {
-            v_ = 96;
-        }
-        if (vi_ > 48) {
-            vi_ = 48;
-        }
-        if (vii_ > 48) {
-            vii_ = 48;
-        }
-
+        
         setOptions({
             title: 'Proporção das horas Cadastradas por critério'
         });
@@ -102,44 +74,15 @@ export default function Home() {
         setDataTotal(
             [
                 ['Categorias', 'Horas Cadastradas', 'Horas necessárias para o curso'],
-                ['Contador de Horas', i_ + ii_ + iii_ + iv_ + v_ + vi_ + vii_, 288],
+                ['Contador de Horas', somaTotal, parseFloat(versao.horas)],
             ]
         )
-        if (i_ === 0 && ii_ === 0 && iii_ === 0 && iv_ === 0 && v_ === 0 && vi_ === 0 && vii_ === 0) {
-            setData(
-                [
-                    ['A', 'Horas inseridas'],
-                    ['Nenhuma Atividade Inserida', 1],
-
-                ]
-            )
-        }
-        else {
-            setData(
-                [
-                    ['A', 'Horas inseridas'],
-                    ['I', i_],
-                    ['II', ii_],
-                    ['III', iii_],
-                    ['IV', iv_],
-                    ['V', v_],
-                    ['VI', vi_],
-                    ['VII', vii_],
-                ]
-            )
-        }
+        
+        if(somaTotal > 0)
+        setData(data)
 
         setDataBar(
-            [
-                ['Categorias', 'Horas Cadastradas', 'Limite da categoria'],
-                ['Categoria I', i_, 96],
-                ['Categoria II', ii_, 64],
-                ['Categoria III', iii_, 32],
-                ['Categoria IV', iv_, 64],
-                ['Categoria V', v_, 96],
-                ['Categoria VI', vi_, 48],
-                ['Categoria VII', vii_, 48],
-            ]
+            data2
         )
     }
 
@@ -152,7 +95,7 @@ export default function Home() {
                 }
             );
             var resJSON = await response.json();
-            somarAtividades(resJSON);
+            getVersao(resJSON);
 
         } catch (err) {
             alert(err);
@@ -167,20 +110,45 @@ export default function Home() {
                 }
             );
             var resJSON = await response.json();
-            if (resJSON.status_entrega === "true") {
-                setStatus(true);
-            }
-            else {
-                setStatus(false);
-            }
-
+            setStatus(resJSON.status_entrega);
 
         } catch (err) {
             console.log(err)
         }
     }
 
+    const getVersao = async (atividades) => {
+        try {
+            const response = await fetch(Portas().serverHost + "/versao/" + token,
+                {
+                    method: "GET",
+                }
+            );
+            var resJSON = await response.json();
+            somarAtividades(resJSON[0], resJSON[1], resJSON[2], atividades);
+
+        } catch (err) {
+            alert(err);
+        }
+    }
+
+    const getAluno = async (atividades) => {
+        try {
+            const response = await fetch(Portas().serverHost + "/alunos/bytoken/" + token,
+                {
+                    method: "GET",
+                }
+            );
+            var resJSON = await response.json();
+            setAluno(resJSON);
+
+        } catch (err) {
+            alert(err);
+        }
+    }
+
     useEffect(() => {
+        getAluno();
         getAtividades();
         getStatus();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -191,22 +159,23 @@ export default function Home() {
             <NavBar></NavBar>
             <Paper elevation={12} style={{ textAlign: "center", marginTop: "20px", marginLeft: "20px", marginRight: "20px", marginBottom: "20px" }}>
                 <h1>Status das atividades:</h1>
-                {status ? <h2 style={{ color: "yellow" }}>Em Homologação</h2> : <h2 style={{ color: "red" }}>Não concluidas</h2>}
+                <h4>{aluno.nome}</h4>
+                <h4>{"{" + status + "}"}</h4>
                 <br></br>
             </Paper>
             <Paper elevation={12} style={{ textAlign: "center", marginTop: "20px", marginLeft: "20px", marginRight: "20px", marginBottom: "20px" }}>
 
-                <h1>Resumo das suas Atividades (Baseado em atividades cadastradas) </h1>
+                <h1>Resumo de atividades (Considerando Limites) </h1>
 
                 <div style={{ width: "100%" }}>
                     <Chart
                         width="100%"
-                        height= "300px"
+                        height="300px"
                         chartType="PieChart"
                         data={data}
                         options={options}
                     />
-                    
+
                 </div>
                 <div style={{ width: "90vw", display: "flex" }}>
                     <Chart

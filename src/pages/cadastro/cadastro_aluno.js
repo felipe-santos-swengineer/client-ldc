@@ -156,7 +156,13 @@ export default function SignInSide() {
                             id="nome"
                             label="Nome completo"
                             value={nome}
-                            inputProps={{ maxLength: 199 }}
+                            inputProps={{
+                                maxLength: 199,
+                                autocomplete: 'new-password',
+                                form: {
+                                    autocomplete: 'off',
+                                },
+                            }}
                             onChange={e => setNome(e.target.value)}
                         />
                         <TextField
@@ -168,12 +174,19 @@ export default function SignInSide() {
                             label="Matricula"
                             style={{ marginBottom: "15px" }}
                             value={matricula}
-                            inputProps={{ maxLength: 49 }}
+                            inputProps={{
+                                maxLength: 49,
+                                autocomplete: 'new-password',
+                                form: {
+                                    autocomplete: 'off',
+                                },
+                            }}
                             onChange={e => setMatricula(e.target.value)}
                         />
                         <TextField
                             id="curso"
                             select
+                            disabled
                             label="curso"
                             value={curso}
                             onChange={handleChangeCurso}
@@ -196,7 +209,13 @@ export default function SignInSide() {
                             id="email"
                             label="Email"
                             value={email}
-                            inputProps={{ maxLength: 199 }}
+                            inputProps={{
+                                maxLength: 199,
+                                autocomplete: 'new-password',
+                                form: {
+                                    autocomplete: 'off',
+                                },
+                            }}
                             onChange={e => setEmail(e.target.value)}
                         />
                         <TextField
@@ -207,7 +226,13 @@ export default function SignInSide() {
                             id="cf_email"
                             label="Confirme o Email"
                             value={confEmail}
-                            inputProps={{ maxLength: 199 }}
+                            inputProps={{
+                                maxLength: 199,
+                                autocomplete: 'new-password',
+                                form: {
+                                    autocomplete: 'off',
+                                },
+                            }}
                             onChange={e => setConfEmail(e.target.value)}
                         />
                         <TextField

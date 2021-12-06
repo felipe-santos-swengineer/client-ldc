@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
@@ -17,6 +17,7 @@ import Button from 'react-bootstrap/Button';
 
 import StoreContext from '../../../components/Store/Context';
 import { useContext } from 'react';
+import { set } from 'date-fns';
 
 
 function TabPanel(props) {
@@ -72,23 +73,13 @@ export default function VerticalTabs() {
     const [value, setValue] = React.useState(0);
     const [tempCategoria, setTempCategoria] = useState("");
     const [editarCategoria, setEditarCategoria] = useState(false);
-    const [categorias, setCategorias] = React.useState([
-        { id: 1, nome: "Atividades de iniciação à docência", horas: 96 },
-        { id: 2, nome: "Atividades de iniciação à pesquisa", horas: 96 },
-        { id: 3, nome: "Atividades de extensão", horas: 96 },
-    ]);
+    const [versao, setVersao] = useState("");
+    const [categorias, setCategorias] = React.useState([]);
 
     //Subcategoria Vars
     const [editarSubCategoria, setEditarSubCategoria] = useState(false);
     const [tempSubCategoria, setTempSubCategoria] = useState("");
-    const [subCategorias, setSubCategorias] = React.useState([
-        { categoria: 1, id: 1, nome: "Atividades de iniciação à docência" },
-        { categoria: 2, id: 1, nome: "Atividades de iniciação à pesquisa" },
-        { categoria: 3, id: 1, nome: "Atividades de extensão" },
-        { categoria: 3, id: 2, nome: "Atividades de iniciação à docência" },
-        { categoria: 2, id: 2, nome: "Atividades de iniciação à pesquisa" },
-        { categoria: 1, id: 2, nome: "Atividades de extensão" },
-    ]);
+    const [subCategorias, setSubCategorias] = React.useState([]);
 
     //Salvar alterações
     const [salvarAlteracoes, setSalvarAlteracoes] = useState(false);
@@ -100,21 +91,45 @@ export default function VerticalTabs() {
     }
 
     const putVersao = async (vNome, vHoras) => {
-            try {
-                const body = { categorias, subCategorias, token, vNome, vHoras };
-                const response = await fetch(Portas().serverHost + "/adicionarVersao", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(body)
-                });
+        try {
+            setVersao({ "nome": vNome, "horas": vHoras });
+            const body = { categorias, subCategorias, token, vNome, vHoras };
+            const response = await fetch(Portas().serverHost + "/adicionarVersao", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
 
-                var resJSON = await response.json();
-                alert(resJSON);
-                //window.location = "/manterAtividades";
+            var resJSON = await response.json();
+            alert(resJSON);
+            handleCloseSA();
+            //window.location = "/manterAtividades";
 
-            } catch (err) {
-                console.log(err.message);
+        } catch (err) {
+            console.log(err.message);
+        }
+    }
+
+    const getVersao = async () => {
+        try {
+            const response = await fetch(Portas().serverHost + "/versao/" + token,
+                {
+                    method: "GET",
+                }
+            );
+            var resJSON = await response.json();
+
+            if(resJSON.length === 0){
+                return;
             }
+
+            setCategorias(resJSON[0]);
+            setSubCategorias(resJSON[1]);
+            setVersao(resJSON[2]);
+
+        } catch (err) {
+            alert(err);
+        }
     }
 
     //CRUD CATEGORIAS
@@ -135,7 +150,7 @@ export default function VerticalTabs() {
         var id = categorias.length + 1;
         var horas = 0;
 
-        setSubCategorias(subCategorias => [...subCategorias, { categoria: id, id: 1, nome: "nova subCategoria" }]);
+        setSubCategorias(subCategorias => [...subCategorias, { id_categoria: id, id: 1, nome: "nova subCategoria" }]);
         setCategorias(categorias => [...categorias, { id: id, nome: nome, horas: horas }]);
 
 
@@ -166,7 +181,7 @@ export default function VerticalTabs() {
         }
 
         var newCatArray = categorias.filter(item => (item.id !== categorias[value].id));
-        var newSubArray = subCategorias.filter(item => (item.categoria !== categorias[value].id));
+        var newSubArray = subCategorias.filter(item => (item.id_categoria !== categorias[value].id));
 
         for (var i = 0; i < newCatArray.length; i++) {
             if (newCatArray[i].id > categorias[value].id) {
@@ -175,8 +190,8 @@ export default function VerticalTabs() {
         }
 
         for (var j = 0; j < newSubArray.length; j++) {
-            if (newSubArray[j].categoria > categorias[value].id) {
-                newSubArray[j].categoria--;;
+            if (newSubArray[j].id_categoria > categorias[value].id) {
+                newSubArray[j].id_categoria--;;
             }
         }
 
@@ -206,31 +221,31 @@ export default function VerticalTabs() {
         var contador = 1;
 
         if (subCategorias.length === 0) {
-            setSubCategorias(subCategorias => [...subCategorias, { categoria: categoria.id, id: contador, nome: nome }]);
+            setSubCategorias(subCategorias => [...subCategorias, { id_categoria: categoria.id, id: contador, nome: nome }]);
             return;
         }
 
         for (var i = 0; i < subCategorias.length; i++) {
-            if (categoria.id === subCategorias[i].categoria) {
+            if (categoria.id === subCategorias[i].id_categoria) {
                 if (contador <= subCategorias[i].id) {
                     contador = subCategorias[i].id + 1;
                 }
             }
         }
 
-        setSubCategorias(subCategorias => [...subCategorias, { categoria: categoria.id, id: contador, nome: nome }]);
+        setSubCategorias(subCategorias => [...subCategorias, { id_categoria: categoria.id, id: contador, nome: nome }]);
     }
 
     function editSubCategoria(novoNome) {
 
-        if(novoNome === ""){
+        if (novoNome === "") {
             alert("Nome inválido");
             return;
         }
         let newArr = [...subCategorias];
 
         for (var i = 0; i < subCategorias.length; i++) {
-            if (subCategorias[i].categoria === tempSubCategoria.categoria && subCategorias[i].id === tempSubCategoria.id) {
+            if (subCategorias[i].id_categoria === tempSubCategoria.id_categoria && subCategorias[i].id === tempSubCategoria.id) {
                 newArr[i].nome = novoNome;
             }
         }
@@ -246,7 +261,7 @@ export default function VerticalTabs() {
         var cont = 0;
 
         for (var i = 0; i < subCategorias.length; i++) {
-            if (subCategorias[i].categoria === item.categoria) {
+            if (subCategorias[i].id_categoria === item.id_categoria) {
                 cont++;
             }
         }
@@ -257,19 +272,18 @@ export default function VerticalTabs() {
         }
 
         for (var k = 0; k < subCategorias.length; k++) {
-            if (subCategorias[k].categoria === item.categoria && subCategorias[k].id === item.id) {
+            if (subCategorias[k].id_categoria === item.id_categoria && subCategorias[k].id === item.id) {
                 newArr.splice(k, 1);
             }
         }
 
         for (var j = 0; j < newArr.length; j++) {
-            if (newArr[j].categoria === item.categoria && newArr[j].id > item.id) {
+            if (newArr[j].id_categoria === item.id_categoria && newArr[j].id > item.id) {
                 newArr[j].id = newArr[j].id - 1;
             }
         }
 
         setSubCategorias(newArr);
-
     }
 
     function romanize(num) {
@@ -282,6 +296,10 @@ export default function VerticalTabs() {
         }
         return roman;
     }
+
+    useEffect(() => {
+        getVersao();
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div>
@@ -383,7 +401,7 @@ export default function VerticalTabs() {
                     <Button variant="secondary" onClick={handleCloseSA}>
                         Cancelar
                     </Button>
-                    <Button variant="primary" onClick={() => putVersao(document.getElementById("nomeVersao").value, document.getElementById("quantHoras").value )}>
+                    <Button variant="primary" onClick={() => putVersao(document.getElementById("nomeVersao").value, document.getElementById("quantHoras").value)}>
                         Confirmar
                     </Button>
                 </Modal.Footer>
@@ -418,14 +436,14 @@ export default function VerticalTabs() {
                     Adicionar SubCategoria
                 </button>
             </div>
-            <div className={classes.root} style={{justifyContent: "center", paddingBottom: "5px", borderBottom: "1px solid"}}>
-                <h3>Versão 2021.1</h3>
+            <div className={classes.root} style={{ justifyContent: "center", paddingBottom: "5px", borderBottom: "1px solid" }}>
+                <div>
+                    <h3>Versão: {versao.nome} / {versao.horas}H</h3>
+                </div>
             </div>
             <div className={classes.root}>
-
                 <Tabs
                     orientation="vertical"
-
                     value={value}
                     onChange={handleChange}
                     aria-label="Vertical tabs example"
@@ -435,8 +453,8 @@ export default function VerticalTabs() {
                 </Tabs>
                 {categorias.map((item, index) => (
                     <TabPanel value={value} index={index}>
-                        {subCategorias.map((item) => (item.categoria === index + 1 ?
-                            <div id="subCategorias" style={{ display: "flex", marginTop: "1vw" }}>
+                        {subCategorias.map((item) => (item.id_categoria === index + 1 ?
+                            <div style={{ display: "flex", marginTop: "1vw" }}>
                                 {romanize(item.id) + "-" + item.nome}
                                 <button style={{ marginLeft: "1vw", color: "blue" }} onClick={() => handleShowESC(item)}>Editar</button>
                                 <button style={{ marginLeft: "1vw", color: "red" }} onClick={() => removerSubCategoria(item)}>Remover</button>
@@ -444,7 +462,7 @@ export default function VerticalTabs() {
                     </TabPanel>))}
 
             </div>
-            <div style={{ marginTop: "5px", marginBottom: "5px",  display: "flex", justifyItems: "center", alignItems: "center", justifyContent: "center", alignContent: "center" }}>
+            <div style={{ marginTop: "5px", marginBottom: "5px", display: "flex", justifyItems: "center", alignItems: "center", justifyContent: "center", alignContent: "center" }}>
                 <button
                     style={{ backgroundColor: "green", border: "none", }}
                     className="btn btn-danger"
@@ -460,7 +478,7 @@ export default function VerticalTabs() {
                     Cancelar Alterações
                 </button>
             </div>
-            <Copyright></Copyright>            
+            <Copyright></Copyright>
         </div >
     );
 }
