@@ -58,9 +58,9 @@ export default function SolicitarAvaliacao() {
                         method: "GET",
                     }
                 );
-                var resJSON = await response.json();
+                var resJSON1 = await response.json();
 
-                if (resJSON.length < 1) {
+                if (resJSON1.length < 1) {
                     alert("Não há atividades cadastradas!");
                     return;
                 }
@@ -73,8 +73,8 @@ export default function SolicitarAvaliacao() {
                             method: "GET",
                         }
                     );
-                    var resJSON1 = await response.json();
-                    alert(resJSON1);
+                    var resJSON2 = await response.json();
+                    alert(resJSON2);
                     window.location = "/historicoAvaliacao";
                     return;
 

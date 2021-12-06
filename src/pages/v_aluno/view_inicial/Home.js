@@ -46,7 +46,7 @@ export default function Home(){
 
         for (var j = 0; j < categorias.length; j++) {
             for (var i = 0; i < atividades.length; i++) {
-                if(categorias[j].id == atividades[i].categoria) {
+                if(categorias[j].id == atividades[i].categoria) { /* eslint eqeqeq: 0 */
                     soma = soma + parseFloat(atividades[i].quantidade_horas);
                 }
             }

@@ -25,7 +25,7 @@ export default function NavBar() {
         );
 
         const resJSON = await response.json();
-    
+
         if (resJSON === "aluno") {
           window.location = "/alunoHome"
           return;
@@ -59,6 +59,7 @@ export default function NavBar() {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav>
+              <Nav.Link href="/avaliadorPerfil" >Perfil</Nav.Link>
               <NavDropdown title="Controle de Atividades" id="basic-nav-dropdown">
                 <NavDropdown.Item href="/avaliarAtividades">Avaliar Atividades</NavDropdown.Item>
                 <NavDropdown.Item href="/historicoAvaliacoes">Histórico de Avaliações</NavDropdown.Item>

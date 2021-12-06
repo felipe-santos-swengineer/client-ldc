@@ -12,22 +12,25 @@ import validator from 'validator';
 export default function Perfil() {
 
     const { token } = useContext(StoreContext);
-    const [aluno, setAluno] = useState([]);
+    const [avaliador, setAvaliador] = useState([]);
     const [emailNovo, setEmailNovo] = useState("");
     const [senhaNova, setSenhaNova] = useState("");
 
-    const getAluno = async (atividades) => {
+    const getAvaliador = async (atividades) => {
         try {
-            const response = await fetch(Portas().serverHost + "/alunos/bytoken/" + token,
-                {
-                    method: "GET",
-                }
-            );
+            const body = { token };
+            const response = await fetch(Portas().serverHost + "/getAvaliador", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
+
             var resJSON = await response.json();
-            setAluno(resJSON);
+            setAvaliador(resJSON);
+
 
         } catch (err) {
-            alert(err);
+            console.log(err.message);
         }
     }
 
@@ -54,15 +57,15 @@ export default function Perfil() {
 
         try {
             const body = { emailNovo, senhaNova};
-            const response = await fetch(Portas().serverHost + "/updateAluno/" + token, {
+            const response = await fetch(Portas().serverHost + "/updateAvaliador/" + token, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body)
             });
 
-            var resJSON = await response.json();
-            console.log(resJSON);
-            window.location = "/alunoPerfil";
+            var resJSON1 = await response.json();
+            console.log(resJSON1);
+            window.location = "/avaliadorPerfil";
 
         } catch (err) {
             console.log(err.message);
@@ -77,7 +80,7 @@ export default function Perfil() {
 
 
     useEffect(() => {
-        getAluno();
+        getAvaliador();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
@@ -85,12 +88,11 @@ export default function Perfil() {
             <NavBar></NavBar>
             <Paper elevation={12} style={{ display: "flex", textAlign: "center", marginTop: "10px", marginLeft: "20px", marginRight: "20px", marginBottom: "10px" }}>
                 <div style={{ width: "50%", display: "flex", flexDirection: "column", justifyContent: "center", justifyItems: "center", alignItems: "center" }}>
-                    <h4>{aluno.nome}</h4>
+                    <h4>{avaliador.nome}</h4>
                     <div>
-                        <p>Matricula: {aluno.matricula}</p>
-                        <p>Email: {aluno.email}</p>
-                        <p>Curso: {aluno.curso}</p>
-                        <p>Membro desde: {aluno.data_criacao !== undefined? dataFormatoBr(aluno.data_criacao) : <div></div>}</p>
+                        <p>Siape: {avaliador.matricula}</p>
+                        <p>Email: {avaliador.email}</p>
+                        <p>Membro desde: {avaliador.data_criacao !== undefined? dataFormatoBr(avaliador.data_criacao) : <div></div>}</p>
                     </div>
                 </div>
                 <form noValidate autoComplete="off" style={{ width: "50%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center ", paddingRight: "5px" }}>

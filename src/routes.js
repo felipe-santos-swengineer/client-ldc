@@ -3,8 +3,9 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 //pages import
 import Login from "./pages/login/Login";
+import Cadastro from "./pages/cadastro/cadastro_aluno";
+import RecuperarSenha from "./pages/recuperarSenha/RecuperarSenha";
 import Aluno_Home from "./pages/v_aluno/view_inicial/Home";
-import Aluno_Cadastro from "./pages/cadastro/cadastro_aluno";
 import Aluno_Perfil from "./pages/v_aluno/perfil/Perfil";
 import Aluno_Cadastrar_Atividade from "./pages/v_aluno/cadastro_horas/CadastrarAtividade";
 import Aluno_Manter_Atividades from "./pages/v_aluno/manterAtividades/ManterAtividades";
@@ -24,6 +25,7 @@ import Avaliador_Avaliar_Atividades from "./pages/v_avaliador/avaliarAtividades/
 import Avaliador_Avaliar_Atividade_Selecionada from "./pages/v_avaliador/avaliarAtividadeSelecionada/AvaliarAtividadeSelecionada";
 import Avaliador_Historico_Avaliacoes from "./pages/v_avaliador/historicoAvaliacoes/HistoricoAvaliacoes";
 import Avaliador_Avaliacao_selecionada from "./pages/v_avaliador/historicoAvaliacoes/AvaliacaoSelecionada";
+import Avaliador_Perfil from "./pages/v_avaliador/perfil/Perfil";
 
 //auth
 import StoreProvider from './components/Store/Provider';
@@ -35,7 +37,8 @@ export default function Routes() {
             <StoreProvider>
                 <Switch>
                     <Route exact path="/" component={Login} />
-                    <Route path="/cadastro" component={Aluno_Cadastro} />
+                    <Route path="/cadastro" component={Cadastro} />
+                    <Route path="/recuperarSenha" component={RecuperarSenha} />
                     <PrivateRoute path="/alunoHome" component={Aluno_Home} />
                     <PrivateRoute path="/manterAtividades" component={Aluno_Manter_Atividades} />
                     <PrivateRoute path="/cadastrarAtividade" component={Aluno_Cadastrar_Atividade} />
@@ -56,6 +59,7 @@ export default function Routes() {
                     <PrivateRoute path="/homologarEntrega" component={Admin_Homologar_Alunos} />
                     <PrivateRoute path="/entregasHomologadas" component={Admin_Entregas_Homologadas} />
                     <PrivateRoute path="/alunoPerfil" component={Aluno_Perfil} />
+                    <PrivateRoute path="/avaliadorPerfil" component={Avaliador_Perfil} />
                 </Switch>
             </StoreProvider>
         </BrowserRouter>

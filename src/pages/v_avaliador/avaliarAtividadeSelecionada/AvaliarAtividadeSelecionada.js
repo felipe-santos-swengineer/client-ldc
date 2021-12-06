@@ -19,7 +19,9 @@ export default function AvaliarAtividadeSelecionada() {
     const [atividades, setAtividades] = useState([]);
     const [versao, setVersao] = useState("");
     const [categorias, setCategorias] = React.useState([]);
-    const [subCategorias, setSubCategorias] = React.useState([]);
+    const [subCategorias, setSubCategorias] = React.useState([]); /* eslint eqeqeq: 0 */
+    console.log(subCategorias);
+
 
     const isValid = (id) => {
         if (id === "" || id === null || id === undefined) {
