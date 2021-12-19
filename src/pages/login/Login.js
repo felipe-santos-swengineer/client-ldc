@@ -49,12 +49,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignInSide() {
   const classes = useStyles();
+  const [render, setRender] = useState(true);
   const { setToken } = useContext(StoreContext);
   const { token } = useContext(StoreContext);
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
   if (token) {
+    setRender(false);
     const redirect = async () => {
       try {
         const response = await fetch(Portas().serverHost + "/verify/" + token,
@@ -234,6 +236,8 @@ export default function SignInSide() {
       console.error(err.message);
     }
   }
+
+  if(render){
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
@@ -304,4 +308,8 @@ export default function SignInSide() {
       </Grid>
     </Grid>
   );
+}
+else{
+  return( <div></div>)
+}
 }
