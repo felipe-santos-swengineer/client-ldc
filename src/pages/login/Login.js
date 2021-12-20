@@ -49,11 +49,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignInSide() {
   const classes = useStyles();
-  const [render, setRender] = useState(true);
   const { setToken } = useContext(StoreContext);
   const { token } = useContext(StoreContext);
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+
+  const [render, setRender] = useState(true);
 
   if (token) {
     setRender(false);

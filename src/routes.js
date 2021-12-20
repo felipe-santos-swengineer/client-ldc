@@ -39,27 +39,27 @@ export default function Routes() {
                     <Route exact path="/" component={Login} />
                     <Route path="/cadastro" component={Cadastro} />
                     <Route path="/recuperarSenha" component={RecuperarSenha} />
-                    <PrivateRoute path="/alunoHome" component={Aluno_Home} />
-                    <PrivateRoute path="/manterAtividades" component={Aluno_Manter_Atividades} />
-                    <PrivateRoute path="/cadastrarAtividade" component={Aluno_Cadastrar_Atividade} />
-                    <PrivateRoute path="/adminHome" component={Admin_Home} />
-                    <PrivateRoute path="/manterAlunos" component={Admin_Manter_Alunos} />
-                    <PrivateRoute path="/aprovarAlunos" component={Admin_Aprovar_Alunos} />
-                    <PrivateRoute path="/cadastroAvaliador" component={Admin_Cadastrar_Avaliador} />
-                    <PrivateRoute path="/manterAvaliadores" component={Admin_Manter_Avaliadores} />
-                    <PrivateRoute path="/avaliadorHome" component={Avaliador_Home} />
-                    <PrivateRoute path="/cadastrarVersao" component={Admin_Cadastrar_Versao} />
-                    <PrivateRoute path="/solicitarAvaliacao" component={Aluno_Solicitar_Avaliacao} />
-                    <PrivateRoute path="/avaliarAtividades" component={Avaliador_Avaliar_Atividades} />
-                    <PrivateRoute path="/avaliarAtividadeSelecionada/:id" component={Avaliador_Avaliar_Atividade_Selecionada} />
-                    <PrivateRoute path="/historicoAvaliacao" component={Aluno_Historico_Avaliacoes} />
-                    <PrivateRoute path="/avaliacaoSelecionada/:id" component={Aluno_Avaliacao_Selecionada} />
-                    <PrivateRoute path="/historicoAvaliacoes" component={Avaliador_Historico_Avaliacoes} />
-                    <PrivateRoute path="/avaliadorAvaliacaoSelecionada/:id" component={Avaliador_Avaliacao_selecionada} />
-                    <PrivateRoute path="/homologarEntrega" component={Admin_Homologar_Alunos} />
-                    <PrivateRoute path="/entregasHomologadas" component={Admin_Entregas_Homologadas} />
-                    <PrivateRoute path="/alunoPerfil" component={Aluno_Perfil} />
-                    <PrivateRoute path="/avaliadorPerfil" component={Avaliador_Perfil} />
+                    <PrivateRoute path="/alunoHome" component={Aluno_Home} user={"aluno"} />
+                    <PrivateRoute path="/manterAtividades" component={Aluno_Manter_Atividades} user={"aluno"} />
+                    <PrivateRoute path="/cadastrarAtividade" component={Aluno_Cadastrar_Atividade} user={"aluno"}/>
+                    <PrivateRoute path="/adminHome" component={Admin_Home} user={"admin"}/>
+                    <PrivateRoute path="/manterAlunos" component={Admin_Manter_Alunos} user={"admin"}/>
+                    <PrivateRoute path="/aprovarAlunos" component={Admin_Aprovar_Alunos} user={"admin"}/>
+                    <PrivateRoute path="/cadastroAvaliador" component={Admin_Cadastrar_Avaliador} user={"admin"}/>
+                    <PrivateRoute path="/manterAvaliadores" component={Admin_Manter_Avaliadores} user={"admin"}/>
+                    <PrivateRoute path="/avaliadorHome" component={Avaliador_Home} user={"avaliador"}/>
+                    <PrivateRoute path="/cadastrarVersao" component={Admin_Cadastrar_Versao} user={"admin"}/>
+                    <PrivateRoute path="/solicitarAvaliacao" component={Aluno_Solicitar_Avaliacao} user={"aluno"}/>
+                    <PrivateRoute path="/avaliarAtividades" component={Avaliador_Avaliar_Atividades} user={"avaliador"}/>
+                    <PrivateRoute path="/avaliarAtividadeSelecionada/:id" component={Avaliador_Avaliar_Atividade_Selecionada} user={"avaliador"}/>
+                    <PrivateRoute path="/historicoAvaliacao" component={Aluno_Historico_Avaliacoes} user={"aluno"}/>
+                    <PrivateRoute path="/avaliacaoSelecionada/:id" component={Aluno_Avaliacao_Selecionada} user={"aluno"}/>
+                    <PrivateRoute path="/historicoAvaliacoes" component={Avaliador_Historico_Avaliacoes} user={"avaliador"}/>
+                    <PrivateRoute path="/avaliadorAvaliacaoSelecionada/:id" component={Avaliador_Avaliacao_selecionada} user={"avaliador"}/>
+                    <PrivateRoute path="/homologarEntrega" component={Admin_Homologar_Alunos} user={"admin"}/>
+                    <PrivateRoute path="/entregasHomologadas" component={Admin_Entregas_Homologadas} user={"admin"}/>
+                    <PrivateRoute path="/alunoPerfil" component={Aluno_Perfil} user={"aluno"}/>
+                    <PrivateRoute path="/avaliadorPerfil" component={Avaliador_Perfil} user={"avaliador"}/>
                 </Switch>
             </StoreProvider>
         </BrowserRouter>

@@ -5,8 +5,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import Global from "./styles/global";
 
-
-
 ReactDOM.render(
   <React.StrictMode>
     <Global />
